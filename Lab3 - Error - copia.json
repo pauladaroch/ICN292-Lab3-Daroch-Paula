@@ -1,0 +1,113 @@
+{
+  "name": "Lab3 - Error",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0c9fa26e-e6fa-4796-ab6c-754c2b61d33f",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "baa5c1d8-00cb-456f-b5dc-62435a59a13b",
+              "name": "workflow_error",
+              "value": "={{ $json.workflow.name }}",
+              "type": "string"
+            },
+            {
+              "id": "8578d91f-ec44-4036-8dea-25a7e4c04a41",
+              "name": "nodo_error",
+              "value": "={{ $json.execution.lastNodeExecuted }}",
+              "type": "string"
+            },
+            {
+              "id": "24ffbf2e-4cc8-4870-a247-fc620faedd37",
+              "name": "mensaje_error",
+              "value": "={{ $json.execution.error.message }}",
+              "type": "string"
+            },
+            {
+              "id": "89ffa040-9e25-4c44-b77a-47fbfc307906",
+              "name": "execution_id",
+              "value": "={{ $json.execution.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "ca79cdf6-01d4-4613-aa0f-544c43b3f1ca",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "sendTo": "correo_destino@example.com",
+        "subject": "Error en workflow n8n",
+        "emailType": "text",
+        "message": "={{ 'Se produjo un error en n8n\\n' + 'Workflow: ' + $json.workflow_error + '\\n' + 'Nodo: ' + $json.nodo_error + '\\n' + 'Error: ' + $json.mensaje_error + '\\n' + 'Execution ID: ' + $json.execution_id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        0
+      ],
+      "id": "0aad25ff-a3cd-43ee-940d-100b4c4af410",
+      "name": "Send a message",
+      "webhookId": "4351f5cf-8736-429c-940f-3aedbb98ab96"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "5d6408f2-ba39-43f5-b9ed-712e2aede112",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "08247e967b71b9550c465ce42e6e532d9dc6ae9d88d035e667d49a377bc7b034"
+  },
+  "nodeGroups": [],
+  "id": "IK7EuatoWjzzXnPn",
+  "tags": []
+}
